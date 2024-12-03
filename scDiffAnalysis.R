@@ -85,3 +85,47 @@ head(endo_vs_all_filtered)
 head(fibro_vs_all_filtered)
 head(classic_vs_all_filtered)
 head(basal_vs_all_filtered)
+
+gene_names <- rownames(immune_vs_all_filtered)
+# Create a new data frame
+immune_genes_df <- data.frame(
+  gene_names = gene_names,
+  cell_type = "immune"  # Assign "immune" to all rows
+)
+gene_names <- rownames(endo_vs_all_filtered)
+# Create a new data frame
+endo_genes_df <- data.frame(
+  gene_names = gene_names,
+  cell_type = "endo"  # Assign "immune" to all rows
+)
+gene_names <- rownames(classic_vs_all_filtered)
+# Create a new data frame
+classic_genes_df <- data.frame(
+  gene_names = gene_names,
+  cell_type = "classic"  # Assign "immune" to all rows
+)
+gene_names <- rownames(fibro_vs_all_filtered)
+fibro_genes_df <- data.frame(
+  gene_names = gene_names,
+  cell_type = "fibro"  # Assign "immune" to all rows
+)
+gene_names <- rownames(basal_vs_all_filtered)
+base_genes_df <- data.frame(
+  gene_names = gene_names,
+  cell_type = "basal"  # Assign "immune" to all rows
+)
+
+gene_list <- rbind(immune_genes_df, endo_genes_df, classic_genes_df, fibro_genes_df, base_genes_df)
+
+computeMCP <- function(TPM_matrix, genes_path) {
+  library(MCPcounter)
+  genes <- read.table(paste0(genes_path, "/MCPcounter/MCPcounter-genes.txt"), sep = "\t", stringsAsFactors = FALSE, header = TRUE, colClasses = "character", check.names = FALSE)
+  mcp <- MCPcounter.estimate(TPM_matrix, genes = genes, featuresType = "HUGO_symbols", probesets = NULL) %>%
+    t()
+  
+  colnames(mcp) = paste0("MCP_", colnames(mcp))
+  colnames(mcp) <- colnames(mcp) %>%
+    str_replace_all(., " ", "_")xx
+  
+  return(mcp)
+}
