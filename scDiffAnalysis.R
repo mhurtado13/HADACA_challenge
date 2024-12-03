@@ -51,7 +51,37 @@ endo_vs_all <- FindMarkers(seurat_object,
                            group.by = "cell_type", 
                            min.pct = 0.25, 
                            test.use = "wilcox")
+endo_vs_all_filtered <- endo_vs_all %>%
+  dplyr::filter(p_val_adj < 0.05)
+
+fibro_vs_all <- FindMarkers(seurat_object, 
+                           ident.1 = "fibro", 
+                           group.by = "cell_type", 
+                           min.pct = 0.25, 
+                           test.use = "wilcox")
+fibro_vs_all_filtered <- fibro_vs_all %>%
+  dplyr::filter(p_val_adj < 0.05)
+
+classic_vs_all <- FindMarkers(seurat_object, 
+                            ident.1 = "classic", 
+                            group.by = "cell_type", 
+                            min.pct = 0.25, 
+                            test.use = "wilcox")
+classic_vs_all_filtered <- classic_vs_all %>%
+  dplyr::filter(p_val_adj < 0.05)
+
+
+basal_vs_all <- FindMarkers(seurat_object, 
+                              ident.1 = "basal", 
+                              group.by = "cell_type", 
+                              min.pct = 0.25, 
+                              test.use = "wilcox")
+basal_vs_all_filtered <- basal_vs_all %>%
+  dplyr::filter(p_val_adj < 0.05)
 
 # Affichage des résultats
-head(immune_vs_all)!
-head(endo_vs_all)
+head(immune_vs_all_filtered)!
+head(endo_vs_all_filtered)
+head(fibro_vs_all_filtered)
+head(classic_vs_all_filtered)
+head(basal_vs_all_filtered)
