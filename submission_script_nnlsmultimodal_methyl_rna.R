@@ -206,12 +206,13 @@ program = function(mix_rna = mix_rna, ref_bulkRNA = ref_bulkRNA, mix_met = mix_m
   # Step 1: Compute the average of the two dataframes
   average_proportions <- (estimated_proportions_meth + estimated_proportions_rna) / 2
   
+  average_proportions["basal",] <- 0.8*average_proportions["basal",]
+  average_proportions["classic",] <- 1.2*average_proportions["classic",]
+  
   # Step 2: Normalize each column to sum to 1
   estimated_proportions <- sweep(average_proportions, 2, colSums(average_proportions), FUN = "/")
   
-  estimated_proportions[is.nan(estimated_proportions)] <- NA
-  
-  print(head(estimated_proportions))
+  estimated_proportions[is.nan(estimated_proportions)] <- 0.2
   
   return(estimated_proportions)
   
